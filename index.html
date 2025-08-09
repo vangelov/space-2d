@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Space-2D</title>
+    <meta charset="utf-8" />
+
+    <style>
+      html {
+        overflow: hidden;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      #gl-canvas {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/picogl@0.17.9/build/picogl.min.js"></script>
+  </head>
+
+  <body>
+    <canvas id="gl-canvas"></canvas>
+
+    <script type="module">
+      import { Loader } from "./loader.js";
+      import { Scene } from "./scene.js";
+
+      const canvas = document.getElementById("gl-canvas");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const pico = PicoGL.createApp(canvas).clearColor(0.0, 0.0, 0.0, 1.0);
+      pico.gl.pixelStorei(pico.gl.UNPACK_ALIGNMENT, 1);
+
+      const loader = new Loader(pico);
+      await loader.load();
+
+      const scene = new Scene({ pico, loader });
+      scene.draw();
+    </script>
+  </body>
+</html>
