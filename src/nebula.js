@@ -1,16 +1,15 @@
-function randomVec2(out, scale) {
-  scale = scale || 1.0;
-  var r = Math.random() * 2.0 * Math.PI;
-  out[0] = Math.cos(r) * scale;
-  out[1] = Math.sin(r) * scale;
-  return out;
+/* Original code: https://github.com/wwwtyro/space-2d */
+
+function randomUnitVector2() {
+  const r = Math.random() * 2.0 * Math.PI;
+  return [Math.cos(r), Math.sin(r)];
 }
 
 export function createTextureData(size) {
-  let l = size * size * 2;
-  let array = new Uint8Array(l);
+  const l = size * size * 2;
+  const array = new Uint8Array(l);
   for (let i = 0; i < l; i++) {
-    let r = randomVec2([]);
+    const r = randomUnitVector2();
     array[i * 2 + 0] = Math.round(0.5 * (1.0 + r[0]) * 255);
     array[i * 2 + 1] = Math.round(0.5 * (1.0 + r[1]) * 255);
   }
@@ -18,13 +17,14 @@ export function createTextureData(size) {
   return array;
 }
 
-const fragmentShaderSource = `
+const fragmentShaderSrc = `
 #version 300 es 
 
 
 precision highp float;
 
 uniform sampler2D tNoise;
+uniform sampler2D source;
 uniform vec3 color;
 uniform vec2 offset;
 uniform float scale, density, falloff, tNoiseSize;
@@ -83,9 +83,9 @@ float noise(vec2 p) {
     }
     return normalnoise(p + displace);
 }
-
-void main() {
-  vec4 p = vec4(0); 
+ 
+void main() { 
+  vec4 p = texture(source, vUV); 
   float n = noise(gl_FragCoord.xy * scale * 1.0);
   n = pow(n + density, falloff);
   fragColor = vec4(mix(p.rgb, color, n), 1);
@@ -96,7 +96,7 @@ void main() {
 const size = 256;
 
 export class Nebula {
-  static fragmentShaderSource = fragmentShaderSource;
+  static fragmentShaderSrc = fragmentShaderSrc;
 
   constructor({ pico, scene, loader }) {
     this.pico = pico;
@@ -124,13 +124,14 @@ export class Nebula {
     );
   }
 
-  draw({ offset, scale, color, density, falloff }) {
+  draw({ offset, scale, color, density, falloff, source }) {
     this.drawCall
       .uniform("offset", offset)
       .uniform("scale", scale)
       .uniform("color", color)
       .uniform("density", density)
       .uniform("falloff", falloff)
+      .texture("source", source)
       .draw();
   }
 }

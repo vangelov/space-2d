@@ -1,7 +1,9 @@
-const fragmentShaderSource = `
+/* Original code: https://github.com/wwwtyro/space-2d */
+
+const fragmentShaderSrc = `
 #version 300 es 
 
-precision highp float;
+precision highp float; 
 
 uniform sampler2D source;
 uniform vec3 coreColor, haloColor;
@@ -27,7 +29,7 @@ void main() {
 `;
 
 export class Star {
-  static fragmentShaderSource = fragmentShaderSource;
+  static fragmentShaderSrc = fragmentShaderSrc;
 
   constructor({ pico, loader, scene }) {
     this.pico = pico;

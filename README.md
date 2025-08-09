@@ -1,0 +1,1 @@
+This is a WebGL 2 reimplementation using PicoGL of the beautiful 2D space rendering from Rye Terrell’s article. I’ve simplified it a bit by omitting custom configuration support. There’s also no build process, and no third-party dependencies apart from PicoGL.

@@ -10,9 +10,9 @@ export class Loader {
   async load() {
     const [program, nebulaProgram, starProgram] =
       await this.pico.createPrograms(
-        [Scene.vertexShaderSource, Scene.fragmentShaderSource],
-        [Scene.vertexShaderSource, Nebula.fragmentShaderSource],
-        [Scene.vertexShaderSource, Star.fragmentShaderSource]
+        [Scene.vertexShaderSrc, Scene.fragmentShaderSrc],
+        [Scene.vertexShaderSrc, Nebula.fragmentShaderSrc],
+        [Scene.vertexShaderSrc, Star.fragmentShaderSrc]
       );
 
     this.program = program;

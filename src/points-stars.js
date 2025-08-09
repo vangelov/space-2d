@@ -1,3 +1,5 @@
+/* Original code: https://github.com/wwwtyro/space-2d */
+
 function createTextureData(width, height, density, brightness) {
   const count = Math.round(width * height * density);
   const data = new Uint8Array(width * height * 3);
@@ -26,7 +28,7 @@ export class PointStars {
 
   createTextures() {
     this.texture = this.pico.createTexture2D(
-      createTextureData(this.pico.width, this.pico.height, 0.1, 0.9),
+      createTextureData(this.pico.width, this.pico.height, 0.05, 0.125),
       this.pico.width,
       this.pico.height,
       {
